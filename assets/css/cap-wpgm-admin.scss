@@ -1,0 +1,93 @@
+//
+//  Variables
+// _________________________________
+
+$white: #FFFFFF;
+$grey: #787c82;
+$error: #d63638;
+$success: #00a32a;
+$border: #DADADA;
+
+$column-right__width: 300px;
+
+//
+//  Layout
+// _________________________________
+
+.cap-wpgm-version {
+    font-size: 12px;
+    margin-left: 7px;
+}
+
+.cap-wpgm-wrap.columns-2 {
+    display: flex;
+    justify-content: space-between;
+
+    input[type="text"].is-error {
+        border-color: $error;
+    }
+
+    input[type="text"].is-success {
+        border-color: $success;
+    }
+
+    input[type="text"].is-error:focus,
+    input[type="text"].is-success:focus {
+        box-shadow: none;
+    }
+
+    input[type="number"] {
+        width: 60px;
+    }
+
+    .column-left {
+        .cap-wpgm-form {
+            .field-wrapper {
+                .description {
+                    font-size: .9em;
+                    margin-top: .35em;
+                }
+            }
+        }
+    }
+
+    .column-right {
+        width: $column-right__width;
+
+        .coordinates-finder {
+            .form-address {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+
+                label {
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+
+            .coordinates {
+                max-height: 0;
+                transition: max-height 0.15s ease-out;
+                overflow: hidden;
+                margin-top: 0;
+
+                .notice {
+                    font-size: .875em;
+                    margin-bottom: 0;
+                }
+
+                &.is-active {
+                    max-height: 900px;
+                    transition: max-height 0.25s ease-in;
+                    margin-top: 1.5em;
+                }
+            }
+        }
+
+        #map {
+            width: $column-right__width;
+            height: 200px;
+        }
+    }
+}
