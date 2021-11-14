@@ -363,6 +363,32 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 					'description' => __( 'Hide the Street View Control', 'cap-wpgm' ),
 				)
 			);
+			add_settings_field(
+				'hide_full_screen_control',
+				__( 'Full Screen Control', 'cap-wpgm' ),
+				array( $this, 'cap_wpgm_input_checkbox_callback' ),
+				'cap-wpgm-setting-admin',
+				'cap_wpgm_setting_section',
+				array(
+					'label_for'   => 'hide_full_screen_control',
+					'class'       => 'field input-checkbox field-hide-full-screen-control',
+					'option_name' => 'cap_wpgm_options',
+					'description' => __( 'Hide the Full Screen Control', 'cap-wpgm' ),
+				)
+			);
+			add_settings_field(
+				'hide_map_type_control',
+				__( 'Map Type Control', 'cap-wpgm' ),
+				array( $this, 'cap_wpgm_input_checkbox_callback' ),
+				'cap-wpgm-setting-admin',
+				'cap_wpgm_setting_section',
+				array(
+					'label_for'   => 'hide_map_type_control',
+					'class'       => 'field input-checkbox field-hide-map-type-control',
+					'option_name' => 'cap_wpgm_options',
+					'description' => __( 'Hide the Map Type Control', 'cap-wpgm' ),
+				)
+			);
 
 			// Register plugin settings
 			register_setting(
@@ -573,7 +599,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 
 			// Render the output
 			?>
-            <div class="field-wrapper field-wrapper-checkbox">
+            <div class="field-wrapper">
                 <div class="field">
                     <input type="checkbox"
                            id="<?php echo esc_attr( $args['label_for'] ); ?>"
@@ -630,6 +656,14 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 
 			if ( isset( $input['hide_street_view_control'] ) ) {
 				$new_input['hide_street_view_control'] = absint( $input['hide_street_view_control'] );
+			}
+
+			if ( isset( $input['hide_full_screen_control'] ) ) {
+				$new_input['hide_full_screen_control'] = absint( $input['hide_full_screen_control'] );
+			}
+
+			if ( isset( $input['hide_map_type_control'] ) ) {
+				$new_input['hide_map_type_control'] = absint( $input['hide_map_type_control'] );
 			}
 
 			return $new_input;
