@@ -42,13 +42,18 @@ if ( ! class_exists( 'Cap_WpGm_Shortcodes' ) ) {
 		 */
 		public function shortcode_google_maps( $atts = [], $tag = '' ) {
 			$atts = array_change_key_case( (array) $atts, CASE_LOWER );
+			// todo: FIX override in shortcode arguments
 			$cap_wpgm_atts = shortcode_atts(
 				array(
-					'height'      => '450px',
-					'zoom'        => get_option( 'cap_wpgm_options' )['zoom'],
-					'lat'         => get_option( 'cap_wpgm_options' )['lat'],
-					'lng'         => get_option( 'cap_wpgm_options' )['lng'],
-					'info_window' => get_bloginfo( 'name' ),
+					'height'              => '450px',
+					'zoom'                => get_option( 'cap_wpgm_options' )['zoom'],
+					'lat'                 => get_option( 'cap_wpgm_options' )['lat'],
+					'lng'                 => get_option( 'cap_wpgm_options' )['lng'],
+					'info_window'         => get_bloginfo( 'name' ),
+					'zoom_control'        => isset( get_option( 'cap_wpgm_options' )['zoom_control'] ),
+					'street_view_control' => isset( get_option( 'cap_wpgm_options' )['street_view_control'] ),
+					'full_screen_control' => isset( get_option( 'cap_wpgm_options' )['full_screen_control'] ),
+					'map_type_control'    => isset( get_option( 'cap_wpgm_options' )['map_type_control'] ),
 				),
 				$atts,
 				$tag
@@ -66,11 +71,15 @@ if ( ! class_exists( 'Cap_WpGm_Shortcodes' ) ) {
 			}
 
 			$vars = array(
-				'zoom'        => $cap_wpgm_atts['zoom'],
-				'lat'         => $cap_wpgm_atts['lat'],
-				'lng'         => $cap_wpgm_atts['lng'],
-				'style'       => $style,
-				'info_window' => $cap_wpgm_atts['info_window']
+				'zoom'                => $cap_wpgm_atts['zoom'],
+				'lat'                 => $cap_wpgm_atts['lat'],
+				'lng'                 => $cap_wpgm_atts['lng'],
+				'style'               => $style,
+				'info_window'         => $cap_wpgm_atts['info_window'],
+				'zoom_control'        => $cap_wpgm_atts['zoom_control'],
+				'street_view_control' => $cap_wpgm_atts['street_view_control'],
+				'full_screen_control' => $cap_wpgm_atts['full_screen_control'],
+				'map_type_control'    => $cap_wpgm_atts['map_type_control'],
 			);
 
 			ob_start();
@@ -92,6 +101,10 @@ if ( ! class_exists( 'Cap_WpGm_Shortcodes' ) ) {
                         center: LatLng,
                         zoom: Number(js_vars.zoom),
                         styles: JSON.parse(js_vars.style),
+                        zoomControl: js_vars.zoom_control,
+                        streetViewControl: js_vars.street_view_control,
+                        fullscreenControl: js_vars.full_screen_control,
+                        mapTypeControl: js_vars.map_type_control,
                     });
 
                     let infowindow = new google.maps.InfoWindow({

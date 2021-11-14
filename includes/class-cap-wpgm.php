@@ -340,55 +340,55 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 				)
 			);
 			add_settings_field(
-				'hide_zoom_control',
+				'zoom_control',
 				__( 'Zoom Control', 'cap-wpgm' ),
 				array( $this, 'cap_wpgm_input_checkbox_callback' ),
 				'cap-wpgm-setting-admin',
 				'cap_wpgm_setting_section',
 				array(
-					'label_for'   => 'hide_zoom_control',
+					'label_for'   => 'zoom_control',
 					'class'       => 'field input-checkbox field-hide-zoom-control',
 					'option_name' => 'cap_wpgm_options',
-					'description' => __( 'Hide the Zoom Control', 'cap-wpgm' ),
+					'description' => __( 'enables/disables the Zoom Control', 'cap-wpgm' ),
 				)
 			);
 			add_settings_field(
-				'hide_street_view_control',
+				'street_view_control',
 				__( 'Street View Control', 'cap-wpgm' ),
 				array( $this, 'cap_wpgm_input_checkbox_callback' ),
 				'cap-wpgm-setting-admin',
 				'cap_wpgm_setting_section',
 				array(
-					'label_for'   => 'hide_street_view_control',
+					'label_for'   => 'street_view_control',
 					'class'       => 'field input-checkbox field-hide-street-view-control',
 					'option_name' => 'cap_wpgm_options',
-					'description' => __( 'Hide the Street View Control', 'cap-wpgm' ),
+					'description' => __( 'enables/disables the Street View Control', 'cap-wpgm' ),
 				)
 			);
 			add_settings_field(
-				'hide_full_screen_control',
+				'full_screen_control',
 				__( 'Full Screen Control', 'cap-wpgm' ),
 				array( $this, 'cap_wpgm_input_checkbox_callback' ),
 				'cap-wpgm-setting-admin',
 				'cap_wpgm_setting_section',
 				array(
-					'label_for'   => 'hide_full_screen_control',
+					'label_for'   => 'full_screen_control',
 					'class'       => 'field input-checkbox field-hide-full-screen-control',
 					'option_name' => 'cap_wpgm_options',
-					'description' => __( 'Hide the Full Screen Control', 'cap-wpgm' ),
+					'description' => __( 'enables/disables the Full Screen Control', 'cap-wpgm' ),
 				)
 			);
 			add_settings_field(
-				'hide_map_type_control',
+				'map_type_control',
 				__( 'Map Type Control', 'cap-wpgm' ),
 				array( $this, 'cap_wpgm_input_checkbox_callback' ),
 				'cap-wpgm-setting-admin',
 				'cap_wpgm_setting_section',
 				array(
-					'label_for'   => 'hide_map_type_control',
+					'label_for'   => 'map_type_control',
 					'class'       => 'field input-checkbox field-hide-map-type-control',
 					'option_name' => 'cap_wpgm_options',
-					'description' => __( 'Hide the Map Type Control', 'cap-wpgm' ),
+					'description' => __( 'enables/disables the Map Type Control', 'cap-wpgm' ),
 				)
 			);
 
@@ -407,8 +407,12 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 		 */
 		public function cap_wpgm_set_default_options() {
 			$defaults = array(
-				'zoom'  => 13,
-				'theme' => 'classic',
+				'zoom'                => 13,
+				'theme'               => 'classic',
+				'zoom_control'        => 1,
+				'street_view_control' => 1,
+				'full_screen_control' => 1,
+				'map_type_control'    => 1,
 			);
 
 			return apply_filters( 'cap_wpgm_default_options', $defaults );
@@ -652,20 +656,20 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 				$new_input['custom_style'] = sanitize_text_field( $input['custom_style'] );
 			}
 
-			if ( isset( $input['hide_zoom_control'] ) ) {
-				$new_input['hide_zoom_control'] = absint( $input['hide_zoom_control'] );
+			if ( isset( $input['zoom_control'] ) ) {
+				$new_input['zoom_control'] = absint( $input['zoom_control'] );
 			}
 
-			if ( isset( $input['hide_street_view_control'] ) ) {
-				$new_input['hide_street_view_control'] = absint( $input['hide_street_view_control'] );
+			if ( isset( $input['street_view_control'] ) ) {
+				$new_input['street_view_control'] = absint( $input['street_view_control'] );
 			}
 
-			if ( isset( $input['hide_full_screen_control'] ) ) {
-				$new_input['hide_full_screen_control'] = absint( $input['hide_full_screen_control'] );
+			if ( isset( $input['full_screen_control'] ) ) {
+				$new_input['full_screen_control'] = absint( $input['full_screen_control'] );
 			}
 
-			if ( isset( $input['hide_map_type_control'] ) ) {
-				$new_input['hide_map_type_control'] = absint( $input['hide_map_type_control'] );
+			if ( isset( $input['map_type_control'] ) ) {
+				$new_input['map_type_control'] = absint( $input['map_type_control'] );
 			}
 
 			return $new_input;
