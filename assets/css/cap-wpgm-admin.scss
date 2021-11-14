@@ -29,24 +29,25 @@ $column-right__width: 300px;
 }
 
 .cap-wpgm-wrap {
-    .field {
-        .description {
-            font-size: .9em;
+    input {
+        &.is-error {
+            border-color: $error;
         }
 
-        &.input-text {
-            input[type="text"].is-error {
-                border-color: $error;
-            }
+        &.is-success {
+            border-color: $success;
+        }
 
-            input[type="text"].is-success {
-                border-color: $success;
-            }
+        &.is-error:focus,
+        &.is-success:focus {
+            box-shadow: none;
+        }
+    }
 
-            input[type="text"].is-error:focus,
-            input[type="text"].is-success:focus {
-                box-shadow: none;
-            }
+    .field {
+
+        .description {
+            font-size: .9em;
         }
 
         &.input-number {

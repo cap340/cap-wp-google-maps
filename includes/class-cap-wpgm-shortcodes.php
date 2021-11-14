@@ -86,6 +86,7 @@ if ( ! class_exists( 'Cap_WpGm_Shortcodes' ) ) {
                 let js_vars = <?php echo json_encode( $vars ); ?>;
                 let LatLng = {lat: Number(js_vars.lat), lng: Number(js_vars.lng)};
 
+                //todo CONTROLS
                 function initMap() {
                     let map = new google.maps.Map(document.getElementById("map"), {
                         center: LatLng,

@@ -1,36 +1,44 @@
-// todo: comments
-
 (function ($) {
+
     $(document).ready(function () {
+
         const {__} = wp.i18n;
 
-        function getCoordinates() {
-            $("button[aria-controls='address']").on("click", function () {
-                let inputApiKey = $("input[name='cap_wpgm_options[api_key]']");
-                let apiKey = inputApiKey.val();
-                let mapContainer = $("#map");
+        /**
+         * Reset input classes
+         */
+        $("input[type='text']").on("focus", function () {
+            $(this).removeClass("is-success is-error");
+        });
 
-                if (!apiKey || apiKey === "") {
-                    inputApiKey.attr("placeholder", __("Please provide an API key", "cap-wpgm"));
-                    inputApiKey.addClass("is-error");
-                    return;
-                }
+        /**
+         * Geocode button
+         */
+        $("button[aria-controls='address']").on("click", function () {
+            let address = document.getElementById("address").value;
+            let apiKey = document.getElementById("api_key").value;
 
-                mapContainer.show();
-                loadScript(apiKey);
-            });
-        }
-        getCoordinates();
+            if (address.length === 0) {
+                alert(__("Empty Address", "cap-wpgm"));
+                document.getElementById("address").classList.add("is-error");
+                return false;
+            }
+            if (apiKey.length === 0) {
+                alert(__("Empty Api Key", "cap-wpgm"));
+                document.getElementById("api_key").classList.add("is-error");
+                return false;
+            }
 
-        function clearInput() {
-            $("input[type='text']").on("focus", function() {
-                $(this).removeClass("is-success is-error");
-            });
-        }
-        clearInput();
+            loadScript(apiKey);
+            document.getElementById("map").style.display = "block";
+        });
 
+        /**
+         * Theme Custom Style
+         * @type {jQuery|HTMLElement|*}
+         */
         let container = $(".field-theme-custom");
-        if($('#theme_custom').is(':checked')) {
+        if ($('#theme_custom').is(':checked')) {
             container.show();
         }
         $(".field-theme input[type=radio]").change(function () {
@@ -40,23 +48,32 @@
                 container.hide();
             }
         });
+
     });
+
 })(jQuery);
 
-let map;
-let marker;
-let infowindow;
-let geocoder;
+let map,
+    marker,
+    infowindow,
+    geocoder;
 
+/**
+ * Load script maps.googleapis.com
+ * @param apiKey
+ */
 function loadScript(apiKey) {
     let script = document.createElement("script");
-    script.id = "maps-googleapis";
+    script.id = "cap-wpgm-maps-googleapis";
     script.type = "text/javascript";
     script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&callback=initMap&v=weekly";
     script.async = true;
     document.body.appendChild(script);
 }
 
+/**
+ * InitMap
+ */
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
         zoom: 16,
@@ -68,6 +85,10 @@ function initMap() {
     geocode({address: address});
 }
 
+/**
+ * Geocode the address
+ * @param request
+ */
 function geocode(request) {
     geocoder
         .geocode(request)

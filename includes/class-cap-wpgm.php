@@ -203,7 +203,9 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
                                             <input type="text" id="address" name="address"/>
                                             <small>Enter your address</small>
                                         </label>
-                                        <button class="button button-primary" aria-controls="address">Go</button>
+                                        <button id="submit-address" class="button button-primary" aria-controls="address">
+                                            <span><?php esc_html_e( 'Go', 'cap-wpgm' ); ?></span>
+                                        </button>
                                     </div>
                                 </div>
                                 <div id="map" style="display: none"></div>
