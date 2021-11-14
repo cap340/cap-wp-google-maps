@@ -19,6 +19,10 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 		 * Holds the values to be used in the fields callbacks
 		 */
 		private $options;
+		/**
+		 * @var string[]
+		 */
+		public $themes;
 
 		/**
 		 * Cap_WpGm constructor.
@@ -29,9 +33,17 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 			// init plugin.
 			$this->cap_wpgm_require_files();
 			$this->cap_wpgm_init();
+
 			add_action( 'admin_enqueue_scripts', array( $this, 'cap_wpgm_register_admin_assets' ) );
 			add_action( 'admin_menu', array( $this, 'cap_wpgm_register_menu' ) );
 			add_action( 'admin_init', array( $this, 'cap_wpgm_settings_init' ) );
+
+			$this->themes = array(
+				'classic'    => '[]',
+				'blue-water' => '[ { "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [ { "color": "#444444" } ] }, { "featureType": "landscape", "elementType": "all", "stylers": [ { "color": "#f2f2f2" } ] }, { "featureType": "poi", "elementType": "all", "stylers": [ { "visibility": "off" } ] }, { "featureType": "road", "elementType": "all", "stylers": [ { "saturation": -100 }, { "lightness": 45 } ] }, { "featureType": "road.highway", "elementType": "all", "stylers": [ { "visibility": "simplified" } ] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [ { "visibility": "off" } ] }, { "featureType": "transit", "elementType": "all", "stylers": [ { "visibility": "off" } ] }, { "featureType": "water", "elementType": "all", "stylers": [ { "color": "#46bcec" }, { "visibility": "on" } ] } ]',
+				'light'      => '[ { "featureType": "all", "elementType": "geometry.fill", "stylers": [ { "weight": "2.00" } ] }, { "featureType": "all", "elementType": "geometry.stroke", "stylers": [ { "color": "#9c9c9c" } ] }, { "featureType": "all", "elementType": "labels.text", "stylers": [ { "visibility": "on" } ] }, { "featureType": "landscape", "elementType": "all", "stylers": [ { "color": "#f2f2f2" } ] }, { "featureType": "landscape", "elementType": "geometry.fill", "stylers": [ { "color": "#ffffff" } ] }, { "featureType": "landscape.man_made", "elementType": "geometry.fill", "stylers": [ { "color": "#ffffff" } ] }, { "featureType": "poi", "elementType": "all", "stylers": [ { "visibility": "off" } ] }, { "featureType": "road", "elementType": "all", "stylers": [ { "saturation": -100 }, { "lightness": 45 } ] }, { "featureType": "road", "elementType": "geometry.fill", "stylers": [ { "color": "#eeeeee" } ] }, { "featureType": "road", "elementType": "labels.text.fill", "stylers": [ { "color": "#7b7b7b" } ] }, { "featureType": "road", "elementType": "labels.text.stroke", "stylers": [ { "color": "#ffffff" } ] }, { "featureType": "road.highway", "elementType": "all", "stylers": [ { "visibility": "simplified" } ] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [ { "visibility": "off" } ] }, { "featureType": "transit", "elementType": "all", "stylers": [ { "visibility": "off" } ] }, { "featureType": "water", "elementType": "all", "stylers": [ { "color": "#46bcec" }, { "visibility": "on" } ] }, { "featureType": "water", "elementType": "geometry.fill", "stylers": [ { "color": "#c8d7d4" } ] }, { "featureType": "water", "elementType": "labels.text.fill", "stylers": [ { "color": "#070707" } ] }, { "featureType": "water", "elementType": "labels.text.stroke", "stylers": [ { "color": "#ffffff" } ] } ]',
+				'dark'       => '[ { "featureType": "all", "elementType": "labels.text.fill", "stylers": [ { "saturation": 36 }, { "color": "#000000" }, { "lightness": 40 } ] }, { "featureType": "all", "elementType": "labels.text.stroke", "stylers": [ { "visibility": "on" }, { "color": "#000000" }, { "lightness": 16 } ] }, { "featureType": "all", "elementType": "labels.icon", "stylers": [ { "visibility": "off" } ] }, { "featureType": "administrative", "elementType": "geometry.fill", "stylers": [ { "color": "#000000" }, { "lightness": 20 } ] }, { "featureType": "administrative", "elementType": "geometry.stroke", "stylers": [ { "color": "#000000" }, { "lightness": 17 }, { "weight": 1.2 } ] }, { "featureType": "landscape", "elementType": "geometry", "stylers": [ { "color": "#000000" }, { "lightness": 20 } ] }, { "featureType": "poi", "elementType": "geometry", "stylers": [ { "color": "#000000" }, { "lightness": 21 } ] }, { "featureType": "road.highway", "elementType": "geometry.fill", "stylers": [ { "color": "#000000" }, { "lightness": 17 } ] }, { "featureType": "road.highway", "elementType": "geometry.stroke", "stylers": [ { "color": "#000000" }, { "lightness": 29 }, { "weight": 0.2 } ] }, { "featureType": "road.arterial", "elementType": "geometry", "stylers": [ { "color": "#000000" }, { "lightness": 18 } ] }, { "featureType": "road.local", "elementType": "geometry", "stylers": [ { "color": "#000000" }, { "lightness": 16 } ] }, { "featureType": "transit", "elementType": "geometry", "stylers": [ { "color": "#000000" }, { "lightness": 19 } ] }, { "featureType": "water", "elementType": "geometry", "stylers": [ { "color": "#000000" }, { "lightness": 17 } ] } ]',
+			);
 		}
 
 		/**
@@ -246,7 +258,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 				'cap_wpgm_setting_section',
 				array(
 					'label_for'   => 'api_key',
-					'class'       => 'cap-wpgm-row',
+					'class'       => 'field-api-key',
 					'description' => __( 'You must use a key with referrer restrictions to be used with this API.', 'cap-wpgm' ),
 					'option_name' => 'cap_wpgm_options',
 					'size'        => '40',
@@ -261,7 +273,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 				'cap_wpgm_setting_section',
 				array(
 					'label_for'   => 'lat',
-					'class'       => 'cap-wpgm-row',
+					'class'       => 'field-lat',
 					'description' => __( 'latitude in geographical coordinates.', 'cap-wpgm' ),
 					'option_name' => 'cap_wpgm_options',
 					'size'        => '40',
@@ -276,7 +288,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 				'cap_wpgm_setting_section',
 				array(
 					'label_for'   => 'lng',
-					'class'       => 'cap-wpgm-row',
+					'class'       => 'field-lng',
 					'description' => __( 'longitude in geographical coordinates.', 'cap-wpgm' ),
 					'option_name' => 'cap_wpgm_options',
 					'size'        => '40',
@@ -291,21 +303,33 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 				'cap_wpgm_setting_section',
 				array(
 					'label_for'   => 'zoom',
-					'class'       => 'cap-wpgm-row',
+					'class'       => 'field-zoom',
 					'description' => __( 'default 13<br>1: World, 5: Landmass/continent, 10: City, 15: Streets, 20: Buildings', 'cap-wpgm' ),
 					'option_name' => 'cap_wpgm_options',
 				)
 			);
 			add_settings_field(
-				'style',
-				__( 'Maps Style', 'cap-wpgm' ),
+				'theme',
+				__( 'Theme', 'cap-wpgm' ),
+				array( $this, 'cap_wpgm_theme_callback' ),
+				'cap-wpgm-setting-admin',
+				'cap_wpgm_setting_section',
+				array(
+					'label_for'   => 'theme',
+					'class'       => 'field-theme',
+					'option_name' => 'cap_wpgm_options',
+				)
+			);
+			add_settings_field(
+				'custom_style',
+				__( 'Custom Style', 'cap-wpgm' ),
 				array( $this, 'cap_wpgm_textarea_callback' ),
 				'cap-wpgm-setting-admin',
 				'cap_wpgm_setting_section',
 				array(
-					'label_for'   => 'style',
-					'class'       => 'cap-wpgm-row',
-					'description' => __( 'Leave blank to use the default style or use a custom one.<br>see <a href="https://snazzymaps.com">Snazzy Maps</a>', 'cap-wpgm' ),
+					'label_for'   => 'custom_style',
+					'class'       => 'field-theme-custom',
+					'description' => __( 'see <a href="https://snazzymaps.com">Snazzy Maps</a>', 'cap-wpgm' ),
 					'option_name' => 'cap_wpgm_options',
 					'cols'        => '38',
 					'rows'        => '10',
@@ -328,7 +352,8 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 		 */
 		public function cap_wpgm_set_default_options() {
 			$defaults = array(
-				'zoom'    => 13,
+				'zoom'  => 13,
+				'theme' => 'classic',
 			);
 
 			return apply_filters( 'cap_wpgm_default_options', $defaults );
@@ -414,6 +439,55 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 		}
 
 		/**
+		 * Option Theme radio button callback function.
+		 *
+		 * @param  array  $args
+		 *
+		 * @since 1.0.1
+		 */
+		public function cap_wpgm_theme_callback( array $args ) {
+			$this->options = get_option( 'cap_wpgm_options' );
+
+			?>
+            <div class="field-wrapper">
+                <?php foreach ( $this->themes as $slug => $data_json ) : ?>
+                    <div class="cap-wpgm-theme theme-<?php echo esc_attr( $slug ); ?>">
+                        <div class="cap-wpgm-theme-text">
+                            <input type="radio" id="<?php echo 'theme_' . $slug; ?>"
+                                   name="<?php echo $args['option_name']; ?>[<?php echo esc_attr( $args['label_for'] ); ?>]"
+                                   value="<?php echo $slug; ?>" <?php echo checked( $slug, $this->options['theme'],
+                                false ) ?>/>
+                            <label for="<?php echo 'theme_' . $slug; ?>"><?php echo $slug; ?></label>
+                            <div class="slug">
+                                <span><?php esc_html_e( 'Shortcode slug', 'cap-wpgm' ); ?></span>
+                                <span><strong>[theme="<?php echo $slug; ?>"]</strong></span>
+                            </div>
+                        </div>
+                        <div class="cap-wpgm-theme-image">
+                            <img src="<?php echo esc_url( CAP_WPGM_URL . '/assets/images/theme-' . $slug . '.png' ); ?>"
+                                 alt="<?php echo $slug; ?>">
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+
+                <?php $slug = 'custom';?>
+                <div class="cap-wpgm-theme theme-<?php echo esc_attr( $slug ); ?>">
+                    <div class="cap-wpgm-theme-text">
+                        <input type="radio" id="<?php echo 'theme_' . $slug; ?>"
+                               name="<?php echo $args['option_name']; ?>[<?php echo esc_attr( $args['label_for'] ); ?>]"
+                               value="<?php echo $slug; ?>" <?php echo checked( $slug, $this->options['theme'], false ) ?>/>
+                        <label for="<?php echo 'theme_' . $slug; ?>"><?php echo $slug; ?></label>
+                        <div class="slug">
+                            <span><?php esc_html_e( 'Shortcode slug', 'cap-wpgm' ); ?></span>
+                            <span><strong>[theme="<?php echo $slug; ?>"]</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
+		}
+
+		/**
 		 * This function renders all the textarea fields for the theme options,
 		 * for any option group / page.
 		 *
@@ -480,11 +554,29 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 				$new_input['zoom'] = absint( $input['zoom'] ); // Ensures that the result is non-negative.
 			}
 
-			if ( isset( $input['style'] ) ) {
-				$new_input['style'] = sanitize_text_field( $input['style'] );
+			if ( isset( $input['theme'] ) ) {
+				$new_input['theme'] = sanitize_text_field( $input['theme'] );
+			}
+
+			if ( isset( $input['custom_style'] ) ) {
+				$new_input['custom_style'] = sanitize_text_field( $input['custom_style'] );
 			}
 
 			return $new_input;
+		}
+
+		/** HELPERS */
+
+		/**
+         * Get theme data json.
+         *
+		 * @param $theme
+		 *
+		 * @return string
+         * @since 1.0.1
+		 */
+		public function cap_wpgm_get_theme_data_json( $theme ) {
+		    return $this->themes[$theme];
 		}
 	}
 }

@@ -24,7 +24,6 @@ if ( ! class_exists( 'Cap_WpGm_Shortcodes' ) ) {
 		 * Cap_WpGm_Shortcodes constructor.
 		 */
 		public function __construct() {
-			$this->api_key = get_option( 'cap_wpgm_options' )['api_key'];
 			add_shortcode( 'cap_wpgm_google_maps', array( $this, 'shortcode_google_maps') );
 		}
 
@@ -55,9 +54,15 @@ if ( ! class_exists( 'Cap_WpGm_Shortcodes' ) ) {
 				$tag
 			);
 
-			$style = get_option( 'cap_wpgm_options' )['style'];
-			if ( $style == '' ) { // set default style if option is empty to fix api error
-				$style = '[]';
+			$this->api_key = get_option( 'cap_wpgm_options' )['api_key'];
+			$theme         = get_option( 'cap_wpgm_options' )['theme'];
+			if ( $theme == 'custom' ) {
+				$style = get_option( 'cap_wpgm_options' )['custom_style'];
+				if ( $style == '' ) {
+					$style = '[]';
+				}
+			} else {
+				$style = ( new Cap_WpGm )->cap_wpgm_get_theme_data_json( $theme );
 			}
 
 			$vars = array(

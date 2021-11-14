@@ -3,7 +3,7 @@
  * Plugin Name: Cap WP Google Maps
  * Plugin URI: https://cap340.fr/extensions/wordpress/cap-wpgm/
  * Description:
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Cap340
  * Author URI: https://cap340.fr
  * Requires at least: 5.0

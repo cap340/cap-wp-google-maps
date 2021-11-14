@@ -28,6 +28,18 @@
             });
         }
         clearInput();
+
+        let container = $(".field-theme-custom");
+        if($('#theme_custom').is(':checked')) {
+            container.show();
+        }
+        $(".field-theme input[type=radio]").change(function () {
+            if (this.value === 'custom') {
+                container.show();
+            } else {
+                container.hide();
+            }
+        });
     });
 })(jQuery);
 
