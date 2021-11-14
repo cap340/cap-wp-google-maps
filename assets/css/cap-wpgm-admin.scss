@@ -23,6 +23,12 @@ $column-right__width: 300px;
     display: flex;
     justify-content: space-between;
 
+    .column-right {
+        width: $column-right__width;
+    }
+}
+
+.cap-wpgm-wrap {
     input[type="text"].is-error {
         border-color: $error;
     }
@@ -40,58 +46,71 @@ $column-right__width: 300px;
         width: 60px;
     }
 
-    .column-left {
-        .cap-wpgm-form {
-            .field-wrapper {
-                .description {
-                    font-size: .9em;
-                    margin-top: .35em;
+    .field-theme {
+        .field-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+
+            .cap-wpgm-theme {
+                .slug {
+                    font-size: .875em;
                 }
             }
 
-            .field-theme-custom {
-                display: none;
+            .cap-wpgm-theme.theme-custom {
+                flex: 1 0 100%;
             }
         }
     }
 
-    .column-right {
-        width: $column-right__width;
+    .field-theme-custom {
+        display: none;
+    }
 
-        .coordinates-finder {
-            .form-address {
+    .field-wrapper {
+        .description {
+            font-size: .9em;
+        }
+    }
+
+    .field-wrapper-checkbox {
+        display: flex;
+        align-items: center;
+    }
+
+    .coordinates-finder {
+        .form-address {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            label {
                 display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-
-                label {
-                    display: flex;
-                    flex-direction: column;
-                }
-            }
-
-            .coordinates {
-                max-height: 0;
-                transition: max-height 0.15s ease-out;
-                overflow: hidden;
-                margin-top: 0;
-
-                .notice {
-                    font-size: .875em;
-                    margin-bottom: 0;
-                }
-
-                &.is-active {
-                    max-height: 900px;
-                    transition: max-height 0.25s ease-in;
-                    margin-top: 1.5em;
-                }
+                flex-direction: column;
             }
         }
 
-        #map {
-            width: $column-right__width;
-            height: 200px;
+        .coordinates {
+            max-height: 0;
+            transition: max-height 0.15s ease-out;
+            overflow: hidden;
+            margin-top: 0;
+
+            .notice {
+                font-size: .875em;
+                margin-bottom: 0;
+            }
+
+            &.is-active {
+                max-height: 900px;
+                transition: max-height 0.25s ease-in;
+                margin-top: 1.5em;
+            }
         }
+    }
+
+    #map {
+        width: $column-right__width;
+        height: 200px;
     }
 }

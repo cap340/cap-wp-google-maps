@@ -38,6 +38,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 			add_action( 'admin_menu', array( $this, 'cap_wpgm_register_menu' ) );
 			add_action( 'admin_init', array( $this, 'cap_wpgm_settings_init' ) );
 
+			// set themes.
 			$this->themes = array(
 				'classic'    => '[]',
 				'blue-water' => '[ { "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [ { "color": "#444444" } ] }, { "featureType": "landscape", "elementType": "all", "stylers": [ { "color": "#f2f2f2" } ] }, { "featureType": "poi", "elementType": "all", "stylers": [ { "visibility": "off" } ] }, { "featureType": "road", "elementType": "all", "stylers": [ { "saturation": -100 }, { "lightness": 45 } ] }, { "featureType": "road.highway", "elementType": "all", "stylers": [ { "visibility": "simplified" } ] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [ { "visibility": "off" } ] }, { "featureType": "transit", "elementType": "all", "stylers": [ { "visibility": "off" } ] }, { "featureType": "water", "elementType": "all", "stylers": [ { "color": "#46bcec" }, { "visibility": "on" } ] } ]',
@@ -258,7 +259,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 				'cap_wpgm_setting_section',
 				array(
 					'label_for'   => 'api_key',
-					'class'       => 'field-api-key',
+					'class'       => 'field input-text field-api-key',
 					'description' => __( 'You must use a key with referrer restrictions to be used with this API.', 'cap-wpgm' ),
 					'option_name' => 'cap_wpgm_options',
 					'size'        => '40',
@@ -273,7 +274,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 				'cap_wpgm_setting_section',
 				array(
 					'label_for'   => 'lat',
-					'class'       => 'field-lat',
+					'class'       => 'field input-text field-lat',
 					'description' => __( 'latitude in geographical coordinates.', 'cap-wpgm' ),
 					'option_name' => 'cap_wpgm_options',
 					'size'        => '40',
@@ -288,7 +289,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 				'cap_wpgm_setting_section',
 				array(
 					'label_for'   => 'lng',
-					'class'       => 'field-lng',
+					'class'       => 'field input-text field-lng',
 					'description' => __( 'longitude in geographical coordinates.', 'cap-wpgm' ),
 					'option_name' => 'cap_wpgm_options',
 					'size'        => '40',
@@ -303,7 +304,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 				'cap_wpgm_setting_section',
 				array(
 					'label_for'   => 'zoom',
-					'class'       => 'field-zoom',
+					'class'       => 'field input-number field-zoom',
 					'description' => __( 'default 13<br>1: World, 5: Landmass/continent, 10: City, 15: Streets, 20: Buildings', 'cap-wpgm' ),
 					'option_name' => 'cap_wpgm_options',
 				)
@@ -316,7 +317,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 				'cap_wpgm_setting_section',
 				array(
 					'label_for'   => 'theme',
-					'class'       => 'field-theme',
+					'class'       => 'field input-radio field-theme',
 					'option_name' => 'cap_wpgm_options',
 				)
 			);
@@ -328,12 +329,38 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 				'cap_wpgm_setting_section',
 				array(
 					'label_for'   => 'custom_style',
-					'class'       => 'field-theme-custom',
+					'class'       => 'field textarea field-theme-custom',
 					'description' => __( 'see <a href="https://snazzymaps.com">Snazzy Maps</a>', 'cap-wpgm' ),
 					'option_name' => 'cap_wpgm_options',
 					'cols'        => '38',
 					'rows'        => '10',
 					'placeholder' => __( '[{...}]', 'cap-wpgm' )
+				)
+			);
+			add_settings_field(
+				'hide_zoom_control',
+				__( 'Zoom Control', 'cap-wpgm' ),
+				array( $this, 'cap_wpgm_input_checkbox_callback' ),
+				'cap-wpgm-setting-admin',
+				'cap_wpgm_setting_section',
+				array(
+					'label_for'   => 'hide_zoom_control',
+					'class'       => 'field input-checkbox field-hide-zoom-control',
+					'option_name' => 'cap_wpgm_options',
+					'description' => __( 'Hide the Zoom Control', 'cap-wpgm' ),
+				)
+			);
+			add_settings_field(
+				'hide_street_view_control',
+				__( 'Street View Control', 'cap-wpgm' ),
+				array( $this, 'cap_wpgm_input_checkbox_callback' ),
+				'cap-wpgm-setting-admin',
+				'cap_wpgm_setting_section',
+				array(
+					'label_for'   => 'hide_street_view_control',
+					'class'       => 'field input-checkbox field-hide-street-view-control',
+					'option_name' => 'cap_wpgm_options',
+					'description' => __( 'Hide the Street View Control', 'cap-wpgm' ),
 				)
 			);
 
@@ -446,8 +473,9 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 		 * @since 1.0.1
 		 */
 		public function cap_wpgm_theme_callback( array $args ) {
-			$this->options = get_option( 'cap_wpgm_options' );
+			$this->options = get_option( $args['option_name'] );
 
+			// Render the output
 			?>
             <div class="field-wrapper">
                 <?php foreach ( $this->themes as $slug => $data_json ) : ?>
@@ -458,14 +486,14 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
                                    value="<?php echo $slug; ?>" <?php echo checked( $slug, $this->options['theme'],
                                 false ) ?>/>
                             <label for="<?php echo 'theme_' . $slug; ?>"><?php echo $slug; ?></label>
-                            <div class="slug">
-                                <span><?php esc_html_e( 'Shortcode slug', 'cap-wpgm' ); ?></span>
-                                <span><strong>[theme="<?php echo $slug; ?>"]</strong></span>
-                            </div>
                         </div>
                         <div class="cap-wpgm-theme-image">
                             <img src="<?php echo esc_url( CAP_WPGM_URL . '/assets/images/theme-' . $slug . '.png' ); ?>"
                                  alt="<?php echo $slug; ?>">
+                        </div>
+                        <div class="slug">
+                            <div><?php esc_html_e( 'Shortcode slug', 'cap-wpgm' ); ?></div>
+                            <div><strong>[theme="<?php echo $slug; ?>"]</strong></div>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -477,10 +505,10 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
                                name="<?php echo $args['option_name']; ?>[<?php echo esc_attr( $args['label_for'] ); ?>]"
                                value="<?php echo $slug; ?>" <?php echo checked( $slug, $this->options['theme'], false ) ?>/>
                         <label for="<?php echo 'theme_' . $slug; ?>"><?php echo $slug; ?></label>
-                        <div class="slug">
-                            <span><?php esc_html_e( 'Shortcode slug', 'cap-wpgm' ); ?></span>
-                            <span><strong>[theme="<?php echo $slug; ?>"]</strong></span>
-                        </div>
+                    </div>
+                    <div class="slug">
+                        <div><?php esc_html_e( 'Shortcode slug', 'cap-wpgm' ); ?></div>
+                        <div><strong>[theme="<?php echo $slug; ?>"]</strong></div>
                     </div>
                 </div>
             </div>
@@ -528,6 +556,40 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 		}
 
 		/**
+		 * This function renders all the checkbox fields for the theme options,
+		 * for any option group / page.
+		 *
+		 * It accepts an array of custom arguments $args defined at the end of the add_settings_field(),
+		 * We use 'label_for' to get the field name in $args,
+		 * 'option_name' to get the page / option group to save,
+		 *
+		 * @param $args array   array defined at the end of add_settings_field()
+		 *
+		 * @since 1.0.1
+		 */
+		public function cap_wpgm_input_checkbox_callback( array $args ) {
+			$this->options = get_option( $args['option_name'] );
+			$checked       = ( isset( $this->options[ $args['label_for'] ] ) && $this->options[ $args['label_for'] ] == 1 ) ? 1 : 0;
+
+			// Render the output
+			?>
+            <div class="field-wrapper field-wrapper-checkbox">
+                <div class="field">
+                    <input type="checkbox"
+                           id="<?php echo esc_attr( $args['label_for'] ); ?>"
+                           name="<?php echo $args['option_name']; ?>[<?php echo esc_attr( $args['label_for'] ); ?>]"
+                           value="1"
+                           <?php echo checked( 1, $checked, false ); ?>
+                    />
+                </div>
+                <div class="description">
+                    <label for="<?php echo esc_attr( $args['label_for'] ); ?>"><?php echo $args['description']; ?></label>
+                </div>
+            </div>
+            <?php
+		}
+
+		/**
 		 * Sanitize each setting field as needed
 		 *
 		 * @param array $input Contains all settings fields as array keys
@@ -560,6 +622,14 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 
 			if ( isset( $input['custom_style'] ) ) {
 				$new_input['custom_style'] = sanitize_text_field( $input['custom_style'] );
+			}
+
+			if ( isset( $input['hide_zoom_control'] ) ) {
+				$new_input['hide_zoom_control'] = absint( $input['hide_zoom_control'] );
+			}
+
+			if ( isset( $input['hide_street_view_control'] ) ) {
+				$new_input['hide_street_view_control'] = absint( $input['hide_street_view_control'] );
 			}
 
 			return $new_input;
