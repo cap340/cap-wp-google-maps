@@ -14,12 +14,12 @@ $column-right__width: 300px;
 //  Layout
 // _________________________________
 
-.cap-wpgm-version {
+.cap-version {
     font-size: 12px;
     margin-left: 7px;
 }
 
-.cap-wpgm-wrap.columns-2 {
+.cap-wrap-inside.columns-2 {
     display: flex;
     justify-content: space-between;
 
@@ -28,7 +28,7 @@ $column-right__width: 300px;
     }
 }
 
-.cap-wpgm-wrap {
+.cap-wrap-inside {
     input {
         &.is-error {
             border-color: $error;

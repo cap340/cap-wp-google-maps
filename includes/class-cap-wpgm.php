@@ -136,8 +136,8 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 
 			add_submenu_page(
 				'cap_core',
-				__( 'Google Maps', 'cap-wpgm' ),
-				__( 'Google Maps', 'cap-wpgm' ),
+				__( 'Google Maps', 'cap-wp-google-maps' ),
+				__( 'Google Maps', 'cap-wp-google-maps' ),
 				'manage_options',
 				'cap_wpgm',
 				array( $this, 'cap_wpgm_create_admin_page' ),
@@ -153,7 +153,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 		public function cap_wpgm_create_admin_page() {
 			// General check for user permissions.
 			if ( ! current_user_can( 'manage_options' ) ) {
-				wp_die( __( 'You do not have sufficient pilchards to access this page.', 'cap-wpgm' ) );
+				wp_die( __( 'You do not have sufficient pilchards to access this page.', 'cap-wp-google-maps' ) );
 			}
 
 			// Set class property for the form
@@ -161,19 +161,19 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 
 			// Start building the page
 			?>
-            <div class="wrap">
+            <div class="wrap cap-wrap">
 
                 <h1 class="wp-heading-inline">
-		            <?php esc_html_e( 'WP Google Maps', 'cap-wpgm' ); ?>
-                    <span class="cap-wpgm-version">
+		            <?php esc_html_e( 'WP Google Maps', 'cap-wp-google-maps' ); ?>
+                    <span class="cap-version">
                         <?php
                         /* translators: %s plugin version */
-                        echo sprintf( __( 'Version %s', 'cap-wpgm' ), CAP_WPGM_VERSION );
+                        echo sprintf( __( 'Version %s', 'cap-wp-google-maps' ), CAP_WPGM_VERSION );
                         ?>
                     </span>
                 </h1>
 
-                <div class="cap-wpgm-wrap metabox-holder columns-2">
+                <div class="cap-wrap-inside metabox-holder columns-2">
 
                     <div class="column-left main-content">
 
@@ -194,9 +194,9 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
                     <div class="column-right postbox-container">
 
                         <div class="meta-box-sortables ui-sortable coordinates-finder">
-                            <h2><?php esc_html_e( 'Get Coordinates', 'cap-wpgm' ); ?></h2>
+                            <h2><?php esc_html_e( 'Get Coordinates', 'cap-wp-google-maps' ); ?></h2>
                             <div class="postbox">
-                                <h3><?php esc_html_e( 'Address', 'cap-wpgm' ); ?></h3>
+                                <h3><?php esc_html_e( 'Address', 'cap-wp-google-maps' ); ?></h3>
                                 <div class="inside">
                                     <div class="form-address">
                                         <label for="address">
@@ -204,7 +204,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
                                             <small>Enter your address</small>
                                         </label>
                                         <button id="submit-address" class="button button-primary" aria-controls="address">
-                                            <span><?php esc_html_e( 'Go', 'cap-wpgm' ); ?></span>
+                                            <span><?php esc_html_e( 'Go', 'cap-wp-google-maps' ); ?></span>
                                         </button>
                                     </div>
                                 </div>
@@ -227,7 +227,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 		 * @since 1.0.0
 		 */
 		public function cap_wpgm_print_section_info() {
-			esc_html_e( 'Enter your settings below:', 'cap-wpgm' );
+			esc_html_e( 'Enter your settings below:', 'cap-wp-google-maps' );
 		}
 
 		/** SETTINGS */
@@ -247,7 +247,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 			// Add section for plugin options
 			add_settings_section(
 				'cap_wpgm_setting_section', // Section ID
-				__( 'Settings', 'cap-wpgm' ), // Section title
+				__( 'Settings', 'cap-wp-google-maps' ), // Section title
 				array( $this, 'cap_wpgm_print_section_info' ), // Section Callback
 				'cap-wpgm-setting-admin' // Page
 			);
@@ -255,65 +255,65 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 			// Add settings fields for plugin options
 			add_settings_field(
 				'api_key',
-				__( 'Api Key', 'cap-wpgm' ),
+				__( 'Api Key', 'cap-wp-google-maps' ),
 				array( $this, 'cap_wpgm_input_text_callback' ),
 				'cap-wpgm-setting-admin',
 				'cap_wpgm_setting_section',
 				array(
 					'label_for'   => 'api_key',
 					'class'       => 'field input-text field-api-key',
-					'description' => __( 'You must use a key with referrer restrictions to be used with this API.', 'cap-wpgm' ),
+					'description' => __( 'You must use a key with referrer restrictions to be used with this API.', 'cap-wp-google-maps' ),
 					'option_name' => 'cap_wpgm_options',
 					'size'        => '40',
-					'placeholder' => __( 'Api Key', 'cap-wpgm' )
+					'placeholder' => __( 'Api Key', 'cap-wp-google-maps' )
 				)
 			);
 			add_settings_field(
 				'lat',
-				__( 'Latitude', 'cap-wpgm' ),
+				__( 'Latitude', 'cap-wp-google-maps' ),
 				array( $this, 'cap_wpgm_input_text_callback' ),
 				'cap-wpgm-setting-admin',
 				'cap_wpgm_setting_section',
 				array(
 					'label_for'   => 'lat',
 					'class'       => 'field input-text field-lat',
-					'description' => __( 'latitude in geographical coordinates.', 'cap-wpgm' ),
+					'description' => __( 'latitude in geographical coordinates.', 'cap-wp-google-maps' ),
 					'option_name' => 'cap_wpgm_options',
 					'size'        => '40',
-					'placeholder' => __( 'latitude', 'cap-wpgm' )
+					'placeholder' => __( 'latitude', 'cap-wp-google-maps' )
 				)
 			);
 			add_settings_field(
 				'lng',
-				__( 'Longitude', 'cap-wpgm' ),
+				__( 'Longitude', 'cap-wp-google-maps' ),
 				array( $this, 'cap_wpgm_input_text_callback' ),
 				'cap-wpgm-setting-admin',
 				'cap_wpgm_setting_section',
 				array(
 					'label_for'   => 'lng',
 					'class'       => 'field input-text field-lng',
-					'description' => __( 'longitude in geographical coordinates.', 'cap-wpgm' ),
+					'description' => __( 'longitude in geographical coordinates.', 'cap-wp-google-maps' ),
 					'option_name' => 'cap_wpgm_options',
 					'size'        => '40',
-					'placeholder' => __( 'longitude', 'cap-wpgm' )
+					'placeholder' => __( 'longitude', 'cap-wp-google-maps' )
 				)
 			);
 			add_settings_field(
 				'zoom',
-				__( 'Zoom Level', 'cap-wpgm' ),
+				__( 'Zoom Level', 'cap-wp-google-maps' ),
 				array( $this, 'cap_wpgm_input_number_callback' ),
 				'cap-wpgm-setting-admin',
 				'cap_wpgm_setting_section',
 				array(
 					'label_for'   => 'zoom',
 					'class'       => 'field input-number field-zoom',
-					'description' => __( 'default 13<br>1: World, 5: Landmass/continent, 10: City, 15: Streets, 20: Buildings', 'cap-wpgm' ),
+					'description' => __( 'default 13<br>1: World, 5: Landmass/continent, 10: City, 15: Streets, 20: Buildings', 'cap-wp-google-maps' ),
 					'option_name' => 'cap_wpgm_options',
 				)
 			);
 			add_settings_field(
 				'theme',
-				__( 'Theme', 'cap-wpgm' ),
+				__( 'Theme', 'cap-wp-google-maps' ),
 				array( $this, 'cap_wpgm_theme_callback' ),
 				'cap-wpgm-setting-admin',
 				'cap_wpgm_setting_section',
@@ -325,23 +325,23 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 			);
 			add_settings_field(
 				'custom_style',
-				__( 'Custom Style', 'cap-wpgm' ),
+				__( 'Custom Style', 'cap-wp-google-maps' ),
 				array( $this, 'cap_wpgm_textarea_callback' ),
 				'cap-wpgm-setting-admin',
 				'cap_wpgm_setting_section',
 				array(
 					'label_for'   => 'custom_style',
 					'class'       => 'field textarea field-theme-custom',
-					'description' => __( 'see <a href="https://snazzymaps.com">Snazzy Maps</a>', 'cap-wpgm' ),
+					'description' => __( 'see <a href="https://snazzymaps.com">Snazzy Maps</a>', 'cap-wp-google-maps' ),
 					'option_name' => 'cap_wpgm_options',
 					'cols'        => '38',
 					'rows'        => '10',
-					'placeholder' => __( '[{...}]', 'cap-wpgm' )
+					'placeholder' => __( '[{...}]', 'cap-wp-google-maps' )
 				)
 			);
 			add_settings_field(
 				'zoom_control',
-				__( 'Zoom Control', 'cap-wpgm' ),
+				__( 'Zoom Control', 'cap-wp-google-maps' ),
 				array( $this, 'cap_wpgm_input_checkbox_callback' ),
 				'cap-wpgm-setting-admin',
 				'cap_wpgm_setting_section',
@@ -349,12 +349,12 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 					'label_for'   => 'zoom_control',
 					'class'       => 'field input-checkbox field-hide-zoom-control',
 					'option_name' => 'cap_wpgm_options',
-					'description' => __( 'enables/disables the Zoom Control', 'cap-wpgm' ),
+					'description' => __( 'enables/disables the Zoom Control', 'cap-wp-google-maps' ),
 				)
 			);
 			add_settings_field(
 				'street_view_control',
-				__( 'Street View Control', 'cap-wpgm' ),
+				__( 'Street View Control', 'cap-wp-google-maps' ),
 				array( $this, 'cap_wpgm_input_checkbox_callback' ),
 				'cap-wpgm-setting-admin',
 				'cap_wpgm_setting_section',
@@ -362,12 +362,12 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 					'label_for'   => 'street_view_control',
 					'class'       => 'field input-checkbox field-hide-street-view-control',
 					'option_name' => 'cap_wpgm_options',
-					'description' => __( 'enables/disables the Street View Control', 'cap-wpgm' ),
+					'description' => __( 'enables/disables the Street View Control', 'cap-wp-google-maps' ),
 				)
 			);
 			add_settings_field(
 				'full_screen_control',
-				__( 'Full Screen Control', 'cap-wpgm' ),
+				__( 'Full Screen Control', 'cap-wp-google-maps' ),
 				array( $this, 'cap_wpgm_input_checkbox_callback' ),
 				'cap-wpgm-setting-admin',
 				'cap_wpgm_setting_section',
@@ -375,12 +375,12 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 					'label_for'   => 'full_screen_control',
 					'class'       => 'field input-checkbox field-hide-full-screen-control',
 					'option_name' => 'cap_wpgm_options',
-					'description' => __( 'enables/disables the Full Screen Control', 'cap-wpgm' ),
+					'description' => __( 'enables/disables the Full Screen Control', 'cap-wp-google-maps' ),
 				)
 			);
 			add_settings_field(
 				'map_type_control',
-				__( 'Map Type Control', 'cap-wpgm' ),
+				__( 'Map Type Control', 'cap-wp-google-maps' ),
 				array( $this, 'cap_wpgm_input_checkbox_callback' ),
 				'cap-wpgm-setting-admin',
 				'cap_wpgm_setting_section',
@@ -388,7 +388,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
 					'label_for'   => 'map_type_control',
 					'class'       => 'field input-checkbox field-hide-map-type-control',
 					'option_name' => 'cap_wpgm_options',
-					'description' => __( 'enables/disables the Map Type Control', 'cap-wpgm' ),
+					'description' => __( 'enables/disables the Map Type Control', 'cap-wp-google-maps' ),
 				)
 			);
 
@@ -524,7 +524,7 @@ if ( ! class_exists( 'Cap_WpGm' ) ) {
                                  alt="<?php echo $slug; ?>">
                         </div>
                         <div class="slug">
-                            <div><?php esc_html_e( 'Shortcode slug', 'cap-wpgm' ); ?></div>
+                            <div><?php esc_html_e( 'Shortcode slug', 'cap-wp-google-maps' ); ?></div>
                             <div><strong>[theme="<?php echo $slug; ?>"]</strong></div>
                         </div>
                     </div>

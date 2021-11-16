@@ -1,14 +1,14 @@
 <?php
 /**
  * Plugin Name: Cap WP Google Maps
- * Plugin URI: https://cap340.fr/extensions/wordpress/cap-wpgm/
+ * Plugin URI: https://cap340.fr/extensions/wordpress/cap-wp-google-maps/
  * Description:
  * Version: 1.0.1
  * Author: Cap340
  * Author URI: https://cap340.fr
  * Requires at least: 5.0
  * Requires PHP: 5.6
- * Text Domain: cap-wpgm
+ * Text Domain: cap-wp-google-maps
  *
  * @todo description
  * @todo README.txt && LICENSE.txt
@@ -64,7 +64,7 @@ if ( ! function_exists( 'cap_wpgm_install' ) ) {
 		global $cap_wpgm;
 
 		// load plugin text domain.
-		load_plugin_textdomain( 'cap-wpgm', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'cap-wp-google-maps', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 		$cap_wpgm = cap_wpgm_initialize();
 	}

@@ -19,12 +19,12 @@
             let apiKey = document.getElementById("api_key").value;
 
             if (address.length === 0) {
-                alert(__("Empty Address", "cap-wpgm"));
+                alert(__("Empty Address", "cap-wp-google-maps"));
                 document.getElementById("address").classList.add("is-error");
                 return false;
             }
             if (apiKey.length === 0) {
-                alert(__("Empty Api Key", "cap-wpgm"));
+                alert(__("Empty Api Key", "cap-wp-google-maps"));
                 document.getElementById("api_key").classList.add("is-error");
                 return false;
             }
@@ -64,7 +64,7 @@ let map,
  */
 function loadScript(apiKey) {
     let script = document.createElement("script");
-    script.id = "cap-wpgm-maps-googleapis";
+    script.id = "cap-wpgm-googleapis";
     script.type = "text/javascript";
     script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&callback=initMap&v=weekly";
     script.async = true;
